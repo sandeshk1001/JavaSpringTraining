@@ -1,0 +1,16 @@
+<center>
+    <div style="border:solid">
+        <h1>User Profile</h1>
+        <p>{{name}}</p>
+        <p>{{email}}</p>
+        <form action="/tweet/showtweets" method="get">
+            <input hidden name="email" value={{email}}>
+            <input value="tweets" type="submit"/>
+        </form>
+    </div>
+    <br/><br/>
+<!--    <form action="/fb/user/displaymypost" method="get">-->
+<!--        <input hidden name="email" value={{email}}>-->
+<!--        <input type="submit" value="MyPost">-->
+<!--    </form>-->
+</center>

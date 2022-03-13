@@ -1,0 +1,25 @@
+<center>
+    <div style="border:solid">
+        <h1>User Profile</h1>
+        <p>{{name}}</p>
+        <p>{{email}}</p>
+        <form action="/tweet/showtweets" method="get">
+            <input hidden name="email" value={{email}}>
+            <input value="tweets" type="submit"/>
+        </form>
+    </div>
+    <br/><br/>
+    <div>
+        <form action="/tweet/newtweet" method="POST">
+            <h2>Create Tweet</h2>
+            <label for="email" hidden>First name:</label>
+            <input hidden name="email" value={{email}}>
+            <label for="password" hidden>First name:</label>
+            <input hidden name="password" value={{password}}>
+            <label for="tweet">Tweet:</label>
+            <textarea name="tweet" rows="5" cols="60"  placeholder="Enter text" required></textarea>
+            <br/>
+            <input type="submit" value="submit"/>
+        </form>
+    </div>
+</center>
