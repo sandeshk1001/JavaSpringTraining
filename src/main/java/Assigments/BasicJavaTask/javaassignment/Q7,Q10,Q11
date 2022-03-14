@@ -1,0 +1,28 @@
+Q 7
+Ans:-  There different thread state in java
+    1) New :- when we create new thread.
+    2) Running :- when thread is executing.
+    3) suspended :- thread is inactive
+    4) blocked :- thread is blocked in execution.
+    5) Terminated :- thread execution is completion.
+Q 10
+Ans:- hashset :-
+        * containe key pairs
+        * contain non duplicate element
+        * In hastmap therse no link means not follows given order
+
+     linkedhastset :-
+        * containe key pairs
+        * contain non duplicate element
+        * It is follow order
+
+Q 11
+Ans :-  set :-
+          * Set contain non dublicate element
+          * It not follows order
+          * it can contains only single null value
+
+        List :-
+          * List contain dublicate element
+          * it follow order
+          * it can contains more than single null value
