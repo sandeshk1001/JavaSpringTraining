@@ -1,6 +1,5 @@
-package com.example.Springdemo;
+package SpringBasic.Day20.getGlopalDataFromProperties;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration

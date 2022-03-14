@@ -1,4 +1,4 @@
-package com.example.SpringException;
+package SpringBasic.Day20.SpringException;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

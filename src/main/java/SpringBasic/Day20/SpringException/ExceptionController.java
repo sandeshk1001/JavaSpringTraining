@@ -1,5 +1,6 @@
-package com.example.SpringException;
+package SpringBasic.Day20.SpringException;
 
+import SpringBasic.Day20.Restapi.InvalidCredentialException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,5 +15,9 @@ public class ExceptionController {
     @ExceptionHandler(value = TweetNotFound2.class)
     public ResponseEntity<Object> handleException2(Exception exception) {
         return new ResponseEntity<>("Tweet 2 not found", HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler(value = InvalidCredentialException.class)
+    public ResponseEntity<Object> handleException3(Exception exception) {
+        return new ResponseEntity<>("Credentials are not valid", HttpStatus.FORBIDDEN);
     }
 }

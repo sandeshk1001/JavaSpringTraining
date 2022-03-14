@@ -1,5 +1,6 @@
 package Assigments.SpringTask_12March.FacebookAPI.Dao;
 
+import Assigments.SpringTask_12March.FacebookAPI.ModelClasses.FbAddFriend;
 import Assigments.SpringTask_12March.FacebookAPI.ModelClasses.FbUser;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,8 @@ public class FbFriendImplement implements Dao{
     @Autowired
     Session session;
     @Override
-    public List readAll() {
-        return session.createQuery("from fb_user", FbUser.class).getResultList();
+    public List<FbAddFriend> readAll() {
+        return session.createQuery("from friends", FbAddFriend.class).getResultList();
     }
 
     @Override

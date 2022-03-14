@@ -1,2 +1,7 @@
-package SpringBasic.Day20;public class Main {
+package SpringBasic.Day20;
+/*
+https://reqres.in/
+
+ */
+public class Main {
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<hibernate-mapping xmlns="http://www.hibernate.org/xsd/orm/hbm">
+    <class name="day9.associtaion_multipe_class.associtaion_multipe_class.Department" table="department">
+        <id name="depId" type="int">
+            <column name="dep_Id"/>
+        </id>
+        <property name="departmentName" column="dep_Name" type="string"></property>
+    </class>
+    <class name="day9.associtaion_multipe_class.Employee" table="Employee">
+        <id name="employeeId" type="int">
+            <column name="employee_Id"></column>
+            <generator class="day8.CustumIdGenerater"></generator>
+        </id>
+        <property name="employeeName" column="emp_Name" type="string"></property>
+        <many-to-one name="Department" column="dep_Id" class="day9.associtaion_multipe_class.Department" cascade="persist">
+        </many-to-one>
+    </class>
+</hibernate-mapping>

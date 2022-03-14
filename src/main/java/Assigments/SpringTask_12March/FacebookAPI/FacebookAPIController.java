@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 public class FacebookAPIController {
@@ -378,30 +379,30 @@ public class FacebookAPIController {
     }
 
     /*----------------------- follow friend-----------------------------*/
-//
-//    @PostMapping("/addfriend")
-//    private ResponseEntity<String> addFriend(@RequestBody Map<String ,String> mapdata){
-//        getAllFbUsers();
-//        ResponseEntity<String> responseEntity=null;
-//        String email=mapdata.get("email");
-//        String friendEmail=mapdata.get("friendEmail");
-//        FbUser fbUser =fbUserProfileMap.get(email);
-//        FbUser fbfriendUser =fbUserProfileMap.get(friendEmail);
-//        if (!isContainsEmail(email) || !isContainsEmail(friendEmail))
-//            responseEntity=new ResponseEntity<>("Email not registered",HttpStatus.NOT_ACCEPTABLE);
-//        else{
-//            FbAddFriend fbAddFriend = new FbAddFriend(fbUser,fbfriendUser);
-//            if (fbfollowmap.containsKey(email)){
-//                fbfollowmap.get(email).add(fbAddFriend);
-//            }else{
-//                List<FbAddFriend> list=new ArrayList<>();
-//                list.add(fbAddFriend);
-//                fbfollowmap.put(email,list);
-//            }
-//            responseEntity=new ResponseEntity<>("friend added",HttpStatus.OK);
-//        }
-//        return responseEntity;
-//    }
+
+    @PostMapping("/addfriend")
+    private ResponseEntity<String> addFriend(@RequestBody Map<String ,String> mapdata){
+        getAllFbUsers();
+        ResponseEntity<String> responseEntity=null;
+        String email=mapdata.get("email");
+        String friendEmail=mapdata.get("friendEmail");
+        String password = mapdata.get("password");
+        FbUser fbUser =fbUserDao.readByEmail(email);
+        FbUser fbfriendUser =fbUserDao.readByEmail(friendEmail);
+        if (!isContainsEmail(email) || !isContainsEmail(friendEmail))
+            responseEntity=new ResponseEntity<>("Email not registered",HttpStatus.NOT_ACCEPTABLE);
+        else if(fbUser.getPassword().equals(password)){
+            List<FbAddFriend> list = fbAddFriendDao.readAll().stream().filter(fbAddFriend -> fbAddFriend.getFriendId()==fbfriendUser.getId()).collect(Collectors.toList());
+            if (list.size()==0){
+                FbAddFriend fbAddFriend = new FbAddFriend(fbfriendUser.getId(),fbUser,false);
+                fbAddFriendDao.create(fbAddFriend);
+                responseEntity=new ResponseEntity<>("friend added",HttpStatus.OK);
+            }else{
+                responseEntity=new ResponseEntity<>("you are already friends",HttpStatus.OK);
+            }
+        }
+        return responseEntity;
+    }
 
     /*----------------------validation ------------------------------*/
 

@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 public class Q5MainDriver {
         public static void main(String[] args) {
             ProcessData processData = new ProcessData();
-            processData.Read();
+            processData.read();
         }
 
 }

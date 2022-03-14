@@ -1,7 +1,5 @@
 package Assigments.HibernateTask.JavaTask02_28fab.Q3;
-
-import jakarta.persistence.*;
-
+import javax.persistence.*;
 @Entity
 @Table(name = "Student")
 public class Student_Anotation {

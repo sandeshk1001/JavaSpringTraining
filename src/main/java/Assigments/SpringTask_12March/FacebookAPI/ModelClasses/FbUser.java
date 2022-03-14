@@ -26,10 +26,10 @@ public class FbUser {
     @OneToMany(mappedBy = "fbUser", cascade = CascadeType.REMOVE)
     private Set<FbPost> posts = new HashSet<>();
 
-    @OneToMany(mappedBy = "fbfriendUser", cascade = CascadeType.REMOVE)
-    private Set<FbAddFriend> addFriends = new HashSet<>();
-    @OneToMany(mappedBy = "fbUser", cascade = CascadeType.REMOVE)
-    private Set<FbAddFriend> fbuser = new HashSet<>();
+//    @OneToMany(mappedBy = "fbfriendUser", cascade = CascadeType.REMOVE)
+//    private Set<FbAddFriend> addFriends = new HashSet<>();
+//    @OneToMany(mappedBy = "fbUser", cascade = CascadeType.REMOVE)
+//    private Set<FbAddFriend> fbuser = new HashSet<>();
 
     public FbUser() {
     }

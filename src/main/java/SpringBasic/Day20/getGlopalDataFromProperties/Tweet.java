@@ -1,4 +1,4 @@
-package com.example.Springdemo;
+package SpringBasic.Day20.getGlopalDataFromProperties;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
