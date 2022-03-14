@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<hibernate-mapping xmlns="http://www.hibernate.org/xsd/orm/hbm">
+
+    <class name="Car" table="Car">
+        <id name="id" type="int">
+            <column name="id"></column>
+            <generator class="sequence"></generator>
+        </id>
+        <property name="name" column="name" type="string"/>
+        <property name="speed" column="speed" type="int"/>
+    </class>
+</hibernate-mapping>
+
+<!--
+If you are done with the assigned task.
+<class name="Car" table="Car">
+        <id name="id" type="int">
+            <generator class="increment"></generator>
+        </id>
+Try using this generator element inside the id class
+And then don't use the generator
+Experiment with both ways
+When you create the object of your class called Car car = new Car()
+car.setProperties….
+Don't set the ID and see what happens,
+the increment will automatically provide the ID
+So you won't need to keep track of specifying the ID.
+
+-->
