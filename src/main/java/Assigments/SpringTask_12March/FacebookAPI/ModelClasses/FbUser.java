@@ -1,4 +1,4 @@
-package Assigments.SpringTask_12March.FacebookAPI;
+package Assigments.SpringTask_12March.FacebookAPI.ModelClasses;
 
 import javax.persistence.*;
 import java.util.HashSet;

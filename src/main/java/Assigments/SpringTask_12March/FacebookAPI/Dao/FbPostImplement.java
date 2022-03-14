@@ -1,6 +1,6 @@
 package Assigments.SpringTask_12March.FacebookAPI.Dao;
 
-import Assigments.SpringTask_12March.FacebookAPI.FbPost;
+import Assigments.SpringTask_12March.FacebookAPI.ModelClasses.FbPost;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

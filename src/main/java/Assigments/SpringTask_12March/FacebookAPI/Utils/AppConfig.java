@@ -1,5 +1,8 @@
-package Assigments.SpringTask_12March.FacebookAPI;
+package Assigments.SpringTask_12March.FacebookAPI.Utils;
 
+import Assigments.SpringTask_12March.FacebookAPI.ModelClasses.FbAddFriend;
+import Assigments.SpringTask_12March.FacebookAPI.ModelClasses.FbPost;
+import Assigments.SpringTask_12March.FacebookAPI.ModelClasses.FbUser;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;

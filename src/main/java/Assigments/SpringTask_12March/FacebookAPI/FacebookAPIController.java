@@ -1,6 +1,9 @@
 package Assigments.SpringTask_12March.FacebookAPI;
 
 import Assigments.SpringTask_12March.FacebookAPI.Dao.Dao;
+import Assigments.SpringTask_12March.FacebookAPI.ModelClasses.FbAddFriend;
+import Assigments.SpringTask_12March.FacebookAPI.ModelClasses.FbPost;
+import Assigments.SpringTask_12March.FacebookAPI.ModelClasses.FbUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -375,30 +378,30 @@ public class FacebookAPIController {
     }
 
     /*----------------------- follow friend-----------------------------*/
-
-    @PostMapping("/addfriend")
-    private ResponseEntity<String> addFriend(@RequestBody Map<String ,String> mapdata){
-        getAllFbUsers();
-        ResponseEntity<String> responseEntity=null;
-        String email=mapdata.get("email");
-        String friendEmail=mapdata.get("friendEmail");
-        FbUser fbUser =fbUserProfileMap.get(email);
-        FbUser fbfriendUser =fbUserProfileMap.get(friendEmail);
-        if (!isContainsEmail(email) || !isContainsEmail(friendEmail))
-            responseEntity=new ResponseEntity<>("Email not registered",HttpStatus.NOT_ACCEPTABLE);
-        else{
-            FbAddFriend fbAddFriend = new FbAddFriend(fbUser,fbfriendUser);
-            if (fbfollowmap.containsKey(email)){
-                fbfollowmap.get(email).add(fbAddFriend);
-            }else{
-                List<FbAddFriend> list=new ArrayList<>();
-                list.add(fbAddFriend);
-                fbfollowmap.put(email,list);
-            }
-            responseEntity=new ResponseEntity<>("friend added",HttpStatus.OK);
-        }
-        return responseEntity;
-    }
+//
+//    @PostMapping("/addfriend")
+//    private ResponseEntity<String> addFriend(@RequestBody Map<String ,String> mapdata){
+//        getAllFbUsers();
+//        ResponseEntity<String> responseEntity=null;
+//        String email=mapdata.get("email");
+//        String friendEmail=mapdata.get("friendEmail");
+//        FbUser fbUser =fbUserProfileMap.get(email);
+//        FbUser fbfriendUser =fbUserProfileMap.get(friendEmail);
+//        if (!isContainsEmail(email) || !isContainsEmail(friendEmail))
+//            responseEntity=new ResponseEntity<>("Email not registered",HttpStatus.NOT_ACCEPTABLE);
+//        else{
+//            FbAddFriend fbAddFriend = new FbAddFriend(fbUser,fbfriendUser);
+//            if (fbfollowmap.containsKey(email)){
+//                fbfollowmap.get(email).add(fbAddFriend);
+//            }else{
+//                List<FbAddFriend> list=new ArrayList<>();
+//                list.add(fbAddFriend);
+//                fbfollowmap.put(email,list);
+//            }
+//            responseEntity=new ResponseEntity<>("friend added",HttpStatus.OK);
+//        }
+//        return responseEntity;
+//    }
 
     /*----------------------validation ------------------------------*/
 
