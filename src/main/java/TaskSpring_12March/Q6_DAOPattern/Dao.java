@@ -1,4 +1,4 @@
-package TaskSpring_12March.Q5_DAOPattern.Dao;
+package TaskSpring_12March.Q6_DAOPattern.Dao;
 
 import java.util.List;
 

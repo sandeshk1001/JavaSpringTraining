@@ -1,8 +1,8 @@
-package TaskSpring_12March.Q5_DAOPattern.Dao;
+package TaskSpring_12March.Q6_DAOPattern.Dao;
 
 import java.util.List;
 
-public class UserDaoImpl2 implements Dao<User>{
+public class UserDaoImpl2 implements UserDao{
     @Override
     public List<User> readAll() {
         return null;
