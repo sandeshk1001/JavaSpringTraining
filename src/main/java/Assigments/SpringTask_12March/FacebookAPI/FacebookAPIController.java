@@ -404,6 +404,21 @@ public class FacebookAPIController {
         return responseEntity;
     }
 
+
+    @PostMapping(value = "/setting", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public ModelAndView setting(@RequestBody MultiValueMap<String, String> map) {
+        String email = map.get("email").get(0);
+        String password = map.get("password").get(0);
+        String visibility = map.get("visibility").get(0);
+        if (!visibility.equals(null) && ("FRIEND".equalsIgnoreCase(visibility) || "PUBLIC".equalsIgnoreCase(visibility))) {
+            FbUser user = fbUserDao.readByEmail(email);
+            if (user != null && user.getPassword().equals(password)) {
+                return errorMessageModelAndView("successfully updated");
+            }
+            return errorMessageModelAndView("Data not matched");
+        }
+        return errorMessageModelAndView("Other than FRIENDS or PUBLIC is not allowed");
+    }
     /*----------------------validation ------------------------------*/
 
     boolean containsInvalidPassword(String password) {
