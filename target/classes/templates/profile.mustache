@@ -3,14 +3,14 @@
         <h1>User Profile</h1>
         <p>{{name}}</p>
         <p>{{email}}</p>
-        <form action="/tweet/showtweets" method="get">
+        <form action="/showmytweet" method="get">
             <input hidden name="email" value={{email}}>
             <input value="tweets" type="submit"/>
         </form>
     </div>
     <br/><br/>
     <div>
-        <form action="/tweet/newtweet" method="POST">
+        <form action="/newpost" method="POST">
             <h2>Create Tweet</h2>
             <label for="email" hidden>First name:</label>
             <input hidden name="email" value={{email}}>

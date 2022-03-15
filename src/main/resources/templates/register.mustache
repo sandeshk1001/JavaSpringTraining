@@ -1,14 +1,20 @@
 <center>
     <div>
         Register User
-        <form action="/user/createuser" method="post">
+        <form action="/createuser" method="post">
             <label for="email">Name:</label>
             <input type="text" id="fname" name="name"><br><br>
             <label for="email">Email:</label>
             <input type="email" id="fname" name="email"><br><br>
+            <select name="visibilty" id="visibilty">
+                <option value="public">Public</option>
+                <option value="frineds">Friends</option>
+                <option value="friendsOfFriends">friends Of Friends</option>
+            </select>
             <label for="password">Password:</label>
             <input type="password" id="lname" name="password"><br><br>
             <input type="submit" value="Submit">
         </form>
-    </div>
+    </div><br/>
+    Already user <a href="/login" >Login</a>
 </center>
