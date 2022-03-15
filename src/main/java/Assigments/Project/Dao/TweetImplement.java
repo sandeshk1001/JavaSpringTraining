@@ -27,7 +27,7 @@ public class TweetImplement implements Dao<Tweet> {
 
     @Override
     public Tweet readById(int id) {
-        return session.createQuery("from tweet where id="+id, Tweet.class).getSingleResult();
+        return session.createQuery("from Tweet where id="+id, Tweet.class).getSingleResult();
     }
 
     @Override
@@ -66,13 +66,13 @@ public class TweetImplement implements Dao<Tweet> {
     public List<Tweet> readByEmailallpost(int entity) {
         System.out.println("id :"+entity);
 //        try {
-//            List<Post> postList=session.createQuery("from post where user_id='"+entity+"'",Post.class).getResultList();
+//            List<Tweet> postList=session.createQuery("from Tweet where user_id='"+entity+"'",Tweet.class).getResultList();
 //            return postList;
 //        }catch (Exception ex){
 //            System.out.println("Exceptionnsssss :"+ex);
 //            return null;
 //        }
-        List<Tweet> postList = readAll().stream().filter(post -> post.getFbUser().getId()==entity).collect(Collectors.toList());
+      List<Tweet> postList = readAll().stream().filter(post -> post.getFbUser().getId()==entity).collect(Collectors.toList());
         return postList;
     }
 }

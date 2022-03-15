@@ -1,4 +1,4 @@
-package Assigments.Project.Utils;
+package Assigments.Project.Configuration;
 
 import Assigments.Project.ModelClasses.AddFriend;
 import Assigments.Project.ModelClasses.Tweet;

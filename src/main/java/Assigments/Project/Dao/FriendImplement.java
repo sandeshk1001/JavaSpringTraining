@@ -13,7 +13,7 @@ public class FriendImplement implements Dao {
     Session session;
     @Override
     public List<AddFriend> readAll() {
-        return session.createQuery("from friends", AddFriend.class).getResultList();
+        return session.createQuery("from AddFriend", AddFriend.class).getResultList();
     }
 
     @Override

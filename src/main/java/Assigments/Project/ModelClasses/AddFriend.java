@@ -2,7 +2,7 @@ package Assigments.Project.ModelClasses;
 
 import javax.persistence.*;
 
-@Entity(name = "friends")
+@Entity
 @Table(name = "friends")
 public class AddFriend {
 

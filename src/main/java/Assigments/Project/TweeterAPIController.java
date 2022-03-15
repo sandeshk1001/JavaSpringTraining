@@ -1,10 +1,11 @@
 package Assigments.Project;
 
 import Assigments.Project.Dao.Dao;
-import Assigments.Project.Dao.TweetImplement;
+import Assigments.Project.Exception.CommanException;
 import Assigments.Project.ModelClasses.AddFriend;
 import Assigments.Project.ModelClasses.Tweet;
 import Assigments.Project.ModelClasses.User;
+import Assigments.Project.Utils.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,10 +16,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+
+import static Assigments.Project.Utils.Utility.isContainsEmail;
+import static Assigments.Project.Utils.Utility.validateUser;
 
 @RestController
 public class TweeterAPIController {
+
     @Autowired
     Dao<User> UserDao;
 
@@ -27,14 +33,6 @@ public class TweeterAPIController {
 
     @Autowired
     Dao<AddFriend> AddFriendDao;
-
-    TweetImplement postImplement=new TweetImplement();
-
-    public static ModelAndView errorMessageModelAndView(String message) {
-        ModelAndView modelAndView = new ModelAndView("Project/error");
-        modelAndView.getModel().put("error", message);
-        return modelAndView;
-    }
 
     @GetMapping("/register")
     public ModelAndView openRegister(){
@@ -50,23 +48,21 @@ public class TweeterAPIController {
     @PostMapping( value = "/createuser", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ModelAndView getRegiseteredData(@RequestBody MultiValueMap<String, String> formData){
         if (formData.isEmpty()){
-            return errorMessageModelAndView(new ResponseEntity<>("No such data", HttpStatus.BAD_REQUEST).toString());
+            throw new CommanException("No such data ",HttpStatus.BAD_REQUEST);
         }
         String name=formData.get("name").get(0);
         String email=formData.get("email").get(0);
         String password=formData.get("password").get(0);
         String visibilty=formData.get("visibilty").get(0);
         User user=new User(name,email,password,visibilty);
-        List<User> list = UserDao.readAll().stream().filter(user1 -> user1.getEmail()== user1.getEmail()).collect(Collectors.toList());
+        List<User> list=UserDao.readAll().stream().filter(user1 ->user1.getEmail().equals(user.getEmail())).collect(Collectors.toList());
         if (name.isEmpty() || email.isEmpty() || password.isEmpty() || visibilty.isEmpty()){
-            return errorMessageModelAndView("Field is not emppty".toString());
+            throw new CommanException("Field is Empty",HttpStatus.BAD_REQUEST);
         }else if (list.size()==0){
             UserDao.create(user);
-            return errorMessageModelAndView("Registrered".toString());
-
+            throw new CommanException("User registered",HttpStatus.OK);
         }else {
-            return errorMessageModelAndView("User already registered".toString());
-
+            throw new CommanException("User already Registered",HttpStatus.FORBIDDEN);
         }
     }
 
@@ -84,55 +80,48 @@ public class TweeterAPIController {
     @PostMapping( value = "/checklogin", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ModelAndView CheckLogin(@RequestBody MultiValueMap<String, String> formData){
         if (formData.isEmpty()){
-            return errorMessageModelAndView(new ResponseEntity<>("No such data", HttpStatus.BAD_REQUEST).toString());
+            return Utility.errorMessageModelAndView(new ResponseEntity<>("No such data", HttpStatus.BAD_REQUEST).toString());
         }
         String email=formData.get("email").get(0);
         String password=formData.get("password").get(0);
         List<User> list = UserDao.readAll().stream().filter(user1 -> user1.getEmail() == user1.getEmail()).collect(Collectors.toList());
         if (email.isEmpty() || password.isEmpty()){
-            return errorMessageModelAndView("Field is not emppty".toString());
+            throw new CommanException("Field is Empty",HttpStatus.BAD_REQUEST);
         }else if (list.size()!=0){
             User user=UserDao.readByEmail(email);
-            if(user.getEmail().equals(email) && user.getPassword().equals(password)){
+            if(Utility.validateUser(email,password)){
                 ModelAndView modelAndView = new ModelAndView("profile");
                 modelAndView.getModel().put("name", user.getName());
                 modelAndView.getModel().put("email", user.getEmail());
                 modelAndView.getModel().put("password", user.getPassword());
                 return modelAndView;
             }else{
-                return errorMessageModelAndView("user is not present".toString());
+                throw new CommanException("Wrong Credentials",HttpStatus.BAD_REQUEST);
             }
         }else {
-            return errorMessageModelAndView("User already registered".toString());
+            throw new CommanException("User already registered",HttpStatus.BAD_REQUEST);
         }
     }
 
-
+    /*--------------------- Tweet -----------------------------*/
     @GetMapping("/mytweet")
     public ModelAndView openmytweet(){
         ModelAndView modelAndView=new ModelAndView("loginForm");
         return modelAndView;
     }
 
-
-    @PostMapping(value = "/newpost", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public ModelAndView addPost(@RequestBody MultiValueMap<String, String> postBody) {
+    @PostMapping(value = "/newtweet", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public ModelAndView addTweet(@RequestBody MultiValueMap<String, String> postBody) {
         String email=postBody.get("email").get(0);
         String password=postBody.get("password").get(0);
         String postString = postBody.get("tweet").get(0);
         User user = UserDao.readByEmail(email);
-        if (isUserValid(postBody)) {
+        if (validateUser(email, password)) {
             Tweet post = new Tweet(postString, LocalDateTime.now(), user);
             PostDao.create(post);
-            return errorMessageModelAndView("Successfully added");
-//            ModelAndView modelAndView = new ModelAndView("success-post");
-//            return modelAndView;
+            throw new CommanException("Tweet Added",HttpStatus.OK);
         }
-        return errorMessageModelAndView("Data mis match");
-    }
-
-    private boolean isUserValid(MultiValueMap<String, String> postBody) {
-        return true;
+        throw new CommanException("Wrong credentials",HttpStatus.OK);
     }
 
     //     show all users on users mustache file -->GET
@@ -141,42 +130,60 @@ public class TweeterAPIController {
         ModelAndView modelAndView=new ModelAndView("showtweets");
         User user=UserDao.readByEmail(email);
         System.out.println("users :"+user);
-        List<Tweet> tweetList =postImplement.readByEmailallpost(user.getId());
-        System.out.println("allPost :"+tweetList);
-        if (tweetList.size()==0){
-            return errorMessageModelAndView("There is not tweet");
-        }
-        System.out.println("allPost :"+tweetList);
+        List<Tweet> tweetList =PostDao.readAll().stream()
+                        .filter(t -> t.getFbUser().getId() == user.getId())
+                        .collect(Collectors.toList());
         modelAndView.getModel().put("tweets",tweetList);
-        modelAndView.getModel().put("name",user.getName());
+        modelAndView.getModel().put("tweetscount",tweetList.size());
+        modelAndView.getModel().put("username",user.getName());
         return modelAndView;
     }
-    /*----------------------validation ------------------------------*/
+    /*----------------------follow ------------------------------*/
 
-    boolean containsInvalidPassword(String password) {
-        if (password.equals(null))
-            return true;
-        return false;
+    @PostMapping( value = "/addfriend", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    private ModelAndView addFriend(@RequestBody Map<String ,String> mapdata){
+        ResponseEntity<String> responseEntity=null;
+        String email=mapdata.get("email");
+        String friendEmail=mapdata.get("friendEmail");
+        String password = mapdata.get("password");
+        User fbUser =UserDao.readByEmail(email);
+        User fbfriendUser =UserDao.readByEmail(friendEmail);
+        if (!isContainsEmail(email) || !isContainsEmail(friendEmail))
+            throw new CommanException("Email not registered",HttpStatus.BAD_REQUEST);
+        else if(fbUser.getPassword().equals(password)){
+            List<AddFriend> list = AddFriendDao.readAll().stream().filter(fbAddFriend -> fbAddFriend.getFriendId()==fbfriendUser.getId()).collect(Collectors.toList());
+            if (list.size()==0){
+                AddFriend fbAddFriend = new AddFriend(fbfriendUser.getId(),fbUser,false);
+                AddFriendDao.create(fbAddFriend);
+                throw new CommanException("Friend added",HttpStatus.BAD_REQUEST);
+            }else{
+                throw new CommanException("You both are already friend",HttpStatus.BAD_REQUEST);
+            }
+        }
+        throw new CommanException("Wrong credential",HttpStatus.BAD_REQUEST);
     }
 
-    boolean isContainsEmail(String email) {
-        return false;
-    }
-
-    boolean isPasswordMatch(String email,String password){
-        return false;
-    }
-
-    boolean containsInvalidEmail(String email) {
-        if (email.equals(null))
-            return true;
-        return false;
-    }
-
-    boolean containsInvalidChar(String name) {
-        if (name.equals(null))
-            return true;
-        return false;
+    @PostMapping( value = "/removefriend", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    private ModelAndView removeFriend(@RequestBody Map<String ,String> mapdata){
+        ResponseEntity<String> responseEntity=null;
+        String email=mapdata.get("email");
+        String friendEmail=mapdata.get("friendEmail");
+        String password = mapdata.get("password");
+        User fbUser =UserDao.readByEmail(email);
+        User fbfriendUser =UserDao.readByEmail(friendEmail);
+        if (!isContainsEmail(email) || !isContainsEmail(friendEmail))
+            throw new CommanException("Email not registered",HttpStatus.BAD_REQUEST);
+        else if(fbUser.getPassword().equals(password)){
+            List<AddFriend> list = AddFriendDao.readAll().stream().filter(fbAddFriend -> fbAddFriend.getFriendId()==fbfriendUser.getId()).collect(Collectors.toList());
+            if (list.size()!=0){
+                AddFriend fbAddFriend = new AddFriend(fbfriendUser.getId(),fbUser,false);
+                AddFriendDao.delete(fbAddFriend);
+                throw new CommanException("Friend deleted",HttpStatus.BAD_REQUEST);
+            }else{
+                throw new CommanException("You both are not a friend",HttpStatus.BAD_REQUEST);
+            }
+        }
+        throw new CommanException("Wrong credential",HttpStatus.BAD_REQUEST);
     }
 
 }

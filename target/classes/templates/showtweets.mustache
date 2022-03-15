@@ -8,16 +8,18 @@
                 <td>name</td>
                 <td>email</td>
                 <td>tweet</td>
+                <td>Time</td>
             </tr>
             </thead>
             <tbody>
-        {{#showtweets}}
-            <tr>
-                <td>{{name}}</td>
-                <td>{{email}}</td>
-                <td>{{tweet}}</td>
-            </tr>
-        {{/showtweets}}
+            {{#tweets}}
+                <tr>
+                    <td>{{fbUser.name}}</td>
+                    <td>{{fbUser.email}}</td>
+                    <td>{{tweetMessage}}</td>
+                    <td>{{localDateTime}}</td>
+                </tr>
+            {{/tweets}}
             </tbody>
         </table>
     </div>
